@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: psdemopod
+  namespace: default
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      bb: web
+  template: 
+    metadata: 
+      labels: 
+        bb: web
+    spec: 
+      containers: 
+        - 
+          image: "psdemo:1.0.0"
+          imagePullPolicy: Never
+          name: psdemocontainer
+          ports: 
+            - 
+              containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pbdemoservice
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    bb: web
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30001
